@@ -1,0 +1,13 @@
+<div class="container">
+  <div>
+    <input type="text" [(ngModel)]="userName" placeholder="username">
+  </div>
+  <br>
+  <button class="btn btm primary" (click)="addUser()">Add</button>
+  <br>
+  <ul *ngIf="showName?.length>0">
+    <li *ngFor="let item of showName; let i=index" (click)="deleteUser(i)">
+      {{item}}
+    </li>
+  </ul>
+</div>
