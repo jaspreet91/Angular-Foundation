@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { TouchSequence } from 'selenium-webdriver';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-server',
@@ -10,17 +11,16 @@ export class ServerComponent implements OnInit {
 
   constructor() { }
 
-  userName;
+  @Output() userName = new EventEmitter<any>();
   showName = [];
+  userData = '';
 
   ngOnInit() {
   }
 
   addUser() {
-    this.showName.push(this.userName);
+    this.showName.push(this.userData);
+    this.userName.emit(this.showName);
   }
 
-  deleteUser(index: number) {
-    this.showName.splice(index, 1);
-  }
 }
