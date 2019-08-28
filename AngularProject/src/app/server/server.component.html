@@ -1,8 +1,8 @@
 <div class="container">
   <div>
-    <input type="text" [(ngModel)]="userData" placeholder="username">
+    <input type="text" placeholder="username" #serverContent>
   </div>
   <br>
-  <button class="btn btn-primary" (click)="addUser()">Add</button>
+  <button class="btn btn-primary" (click)="addUser(serverContent)">Add</button>
   <br>
 </div>
