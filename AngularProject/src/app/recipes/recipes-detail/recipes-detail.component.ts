@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Renderer2 } from '@angular/core';
 
 @Component({
   selector: 'app-recipes-detail',
@@ -8,10 +8,13 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/cor
 export class RecipesDetailComponent implements OnInit {
 
   @Input() recipe;
-  constructor() { }
+  constructor(private Renderer: Renderer2) { }
 
   ngOnInit() {
-
   }
+
+  // dropdown() {
+  //   this.Renderer.addClass('button, 'btn-group open');
+  // }
 
 }
