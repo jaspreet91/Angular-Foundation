@@ -1,10 +1,17 @@
 <!-- <div class="container"> -->
 <div class="row">
-  <div class="col-md-5">
-    <app-recipes-list></app-recipes-list>
+
+  <div class="col-md-5" style="border: 1px solid red">
+    recipe list
+    <app-recipes-list (recipeWasSelected)="selectedRecipe = $event"></app-recipes-list>
   </div>
-  <div class="col-md-7">
-    <app-recipes-detail></app-recipes-detail>
+
+  <div class="col-md-7" style="border: 1px solid blue">
+    recipe details
+    <app-recipes-detail *ngIf="selectedRecipe; else infoText" [recipe]="selectedRecipe"></app-recipes-detail>
   </div>
+  <ng-template #infoText>
+    Select a recipe
+  </ng-template>
 </div>
 <!-- </div> -->
