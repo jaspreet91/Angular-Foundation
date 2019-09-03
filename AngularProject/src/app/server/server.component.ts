@@ -10,17 +10,13 @@ export class ServerComponent implements OnInit {
 
   constructor() { }
 
-  userName;
-  showName = [];
+  displayTxt;
 
   ngOnInit() {
   }
 
-  addUser() {
-    this.showName.push(this.userName);
+  displayText() {
+  this.displayTxt = !this.displayTxt;
   }
 
-  deleteUser(index: number) {
-    this.showName.splice(index, 1);
-  }
 }
