@@ -6,7 +6,8 @@ import { Recipe } from '../recipes/recipe.model';
 })
 export class RecipeService {
   private Recipe: Recipe[] = [
-    { name: 'Daal Fry', description: 'daal fry', imagePath: 'https://picsum.photos/200/', name: 'zyx', amount: 1 },
+    { name: 'Daal Fry', description: 'daal fry', imagePath: 'https://picsum.photos/200/',
+     ingredient: [{name : 'Meat', amount: 1}, {name: 'French Fries', amount: 1}] },
     { name: 'Pav Bhaji', description: 'all vegies', imagePath: 'https://picsum.photos/200' },
   ];
 
