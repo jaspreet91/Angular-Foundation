@@ -1,4 +1,6 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, Renderer2 } from '@angular/core';
+import { RecipeService } from './../../services/recipe.service';
+import { Recipe } from './../recipe.model';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-recipes-detail',
@@ -7,14 +9,15 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, Renderer2 } from '@
 })
 export class RecipesDetailComponent implements OnInit {
 
-  @Input() recipe;
-  constructor(private Renderer: Renderer2) { }
+  recipe: Recipe;
+  constructor(private recipeService: RecipeService) { }
 
   ngOnInit() {
+    this.recipeService.recipeSelected.subscribe((recipeData: Recipe) => {
+      // this.recipe = recipeData;
+      console.log('emit event');
+    });
   }
 
-  // dropdown() {
-  //   this.Renderer.addClass('button, 'btn-group open');
-  // }
 
 }

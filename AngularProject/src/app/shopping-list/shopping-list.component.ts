@@ -1,5 +1,7 @@
+import { ShoppingListService } from './../services/shopping-list.service';
 import { Ingredient } from './../shared/ingredients.model';
 import { Component, OnInit } from '@angular/core';
+import { TouchSequence } from 'selenium-webdriver';
 
 @Component({
   selector: 'app-shopping-list',
@@ -8,17 +10,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ShoppingListComponent implements OnInit {
 
-  ingredients: Ingredient[] = [
-    { name: 'apple', amount: 5 },
-    { name: 'oranges', amount: 15 }
-  ];
-  constructor() { }
+  ingredients: Ingredient[];
+  constructor(private shoppingList: ShoppingListService) { }
 
   ngOnInit() {
-  }
-
-  onIngredientAdded(ingredient: Ingredient) {
-    this.ingredients.push(ingredient);
+    this.ingredients = this.shoppingList.getShoppingList();
+    this.shoppingList.updateList.subscribe(() => {
+      this.ingredients = this.shoppingList.getShoppingList();
+    })
   }
 
 }
