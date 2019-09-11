@@ -14,7 +14,6 @@ export class RecipeStartComponent implements OnInit {
   ngOnInit() {
     this.route.data.subscribe((data: Data) => {
       this.message = data['message'];
-      console.log(this.message);
     });
   }
 
