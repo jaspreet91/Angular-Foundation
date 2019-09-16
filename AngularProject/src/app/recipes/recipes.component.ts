@@ -15,9 +15,6 @@ export class RecipesComponent implements OnInit {
               private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.recipeService.recipeSelected.subscribe((recipeData: Recipe) => {
-      this.selectedRecipe = recipeData;
-    });
   }
 
 }

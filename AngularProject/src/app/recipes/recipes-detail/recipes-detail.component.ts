@@ -40,5 +40,9 @@ export class RecipesDetailComponent implements OnInit {
     alert('Items added to Shopping list');
   }
 
+  deleteRecipe() {
+    this.recipeService.deleteRecipe(this.id);
+    this.router.navigate(['/']);
+  }
 
 }

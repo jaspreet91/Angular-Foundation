@@ -1,10 +1,14 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import { Recipe } from '../recipes/recipe.model';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RecipeService {
+
+  recipeListUpdated = new Subject<boolean>();
+
   private Recipe: Recipe[] = [
     {
       name: 'Daal Fry', description: 'daal fry', imagePath: 'https://picsum.photos/200/',
@@ -16,8 +20,6 @@ export class RecipeService {
     },
   ];
 
-  recipeSelected = new EventEmitter<Recipe>(true);
-
   constructor() { }
 
   getRecipes() {
@@ -26,5 +28,9 @@ export class RecipeService {
 
   getRecipe(id: number) {
     return this.Recipe.slice()[id];
+  }
+
+  deleteRecipe(id: number) {
+   confirm('do you really want to delete');
   }
 }
