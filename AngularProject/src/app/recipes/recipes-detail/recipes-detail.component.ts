@@ -26,7 +26,6 @@ export class RecipesDetailComponent implements OnInit {
       this.recipe = this.recipeService.getRecipe(this.id);
 
       if (!this.recipe) {
-
         this.router.navigate(['../no-recipe-found'], {relativeTo: this.route});
         }
     });
