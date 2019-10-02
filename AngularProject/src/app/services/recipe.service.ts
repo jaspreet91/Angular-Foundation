@@ -33,4 +33,8 @@ export class RecipeService {
   deleteRecipe(id: number) {
    confirm('do you really want to delete');
   }
+
+  updateRecipe(index: number, recipe: Recipe) {
+    this.Recipe[index] =  recipe;
+  }
 }
