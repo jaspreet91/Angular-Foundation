@@ -15,11 +15,10 @@ export class RecipesListComponent implements OnInit, OnDestroy {
   constructor(private recipeService: RecipeService) { }
 
   ngOnInit() {
-    this.Recipe = this.recipeService.getRecipes();
+    this.Recipe = this.recipeService.getAllRecipes();
     this.updateRecipeSub = this.recipeService.recipeListUpdated.subscribe((data: boolean) => {
       if (data) {
-        console.log(data);
-        this.Recipe = this.recipeService.getRecipes();
+        this.Recipe = this.recipeService.getAllRecipes();
       }
     });
   }

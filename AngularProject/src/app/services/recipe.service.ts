@@ -22,7 +22,7 @@ export class RecipeService {
 
   constructor() { }
 
-  getRecipes() {
+  getAllRecipes() {
     return this.Recipe.slice();
   }
 
@@ -30,11 +30,21 @@ export class RecipeService {
     return this.Recipe.slice()[id];
   }
 
-  deleteRecipe(id: number) {
-   confirm('do you really want to delete');
+  addRecipe(recipe: Recipe) {
+    this.Recipe.push(recipe);
+    this.recipeListUpdated.next(true);
   }
 
   updateRecipe(index: number, recipe: Recipe) {
-    this.Recipe[index] =  recipe;
+    this.Recipe[index] = recipe;
+    this.recipeListUpdated.next(true);
   }
+
+  deleteRecipe(index: number) {
+    confirm('do you really want to delete');
+    this.Recipe.splice(index, 1);
+    this.recipeListUpdated.next(true);
+  }
+
+  
 }
