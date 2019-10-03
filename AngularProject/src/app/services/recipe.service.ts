@@ -1,6 +1,6 @@
-import { Injectable, Output, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Recipe } from '../recipes/recipe.model';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -41,10 +41,10 @@ export class RecipeService {
   }
 
   deleteRecipe(index: number) {
-    confirm('do you really want to delete');
-    this.Recipe.splice(index, 1);
-    this.recipeListUpdated.next(true);
+    const val = confirm('do you really want to delete');
+    if (val) {
+      this.Recipe.splice(index, 1);
+      this.recipeListUpdated.next(true);
+    }
   }
-
-  
 }

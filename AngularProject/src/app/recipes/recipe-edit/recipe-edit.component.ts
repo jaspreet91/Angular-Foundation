@@ -12,7 +12,7 @@ import { RecipeService } from 'src/app/services/recipe.service';
 export class RecipeEditComponent implements OnInit {
 
   id: number;
-  editMode: boolean;
+  editMode = false;
   recipe: Recipe;
   editForm: FormGroup;
   formIngredient: FormArray;
@@ -32,8 +32,9 @@ export class RecipeEditComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
       this.id = +params.id;
-      if (this.id !== undefined) {
+      if (!isNaN(this.id)) {
         this.editMode = true;
+        console.log(this.editMode, 'edit mode');
       }
     });
 
@@ -67,8 +68,7 @@ export class RecipeEditComponent implements OnInit {
   }
 
   onSave() {
-    console.log('im here');
-    if (!this.editMode) {
+    if (this.editMode) {
       this.recipeService.updateRecipe(this.id, this.editForm.value);
     } else {
       this.recipeService.addRecipe(this.editForm.value);
@@ -91,6 +91,10 @@ export class RecipeEditComponent implements OnInit {
         ])
       })
     );
+  }
+
+  deleteIngredient(index: number) {
+    this.formIngredient.removeAt(index);
   }
 
 }
