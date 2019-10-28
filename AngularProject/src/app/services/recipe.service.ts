@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Recipe } from '../recipes/recipe.model';
 import { Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -20,10 +23,20 @@ export class RecipeService {
     },
   ];
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   getAllRecipes() {
-    return this.Recipe.slice();
+    // return this.Recipe.slice();
+  return  this.http.get('https://angular-http-6e830.firebaseio.com/recipes.json').pipe(
+    map((res: Recipe) => {
+      for (const key in res) {
+        if (res.hasOwnProperty(key)) {
+        this.Recipe.push(res[key]);
+        }
+      }
+      return this.Recipe;
+      })
+    );
   }
 
   getRecipe(id: number) {
@@ -31,8 +44,13 @@ export class RecipeService {
   }
 
   addRecipe(recipe: Recipe) {
-    this.Recipe.push(recipe);
-    this.recipeListUpdated.next(true);
+    this.http.post('https://angular-http-6e830.firebaseio.com/recipes.json', recipe).subscribe((res: any) => {
+      if (res.name) {
+        alert('data added succesfully');
+     }
+    });
+    // this.Recipe.push(recipe);
+    // this.recipeListUpdated.next(true);
   }
 
   updateRecipe(index: number, recipe: Recipe) {
