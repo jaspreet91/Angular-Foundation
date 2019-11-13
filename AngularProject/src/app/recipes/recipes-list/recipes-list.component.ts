@@ -18,7 +18,9 @@ export class RecipesListComponent implements OnInit, OnDestroy {
 
     this.getAllData();
     this.updateRecipeSub = this.recipeService.recipeListUpdated.subscribe((update: boolean) => {
-      this.getAllData();
+      if (update) {
+        this.getAllData();
+      }
     });
   }
 
