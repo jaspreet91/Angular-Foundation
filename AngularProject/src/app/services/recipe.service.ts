@@ -1,9 +1,10 @@
+import { AuthService } from './auth.service';
 import { Injectable } from '@angular/core';
 import { Recipe } from '../recipes/recipe.model';
 import { Subject, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, take, exhaustMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -14,19 +15,15 @@ export class RecipeService {
 
   private Recipe: Recipe[] = [];
   firebaseId: string;
+  token: string;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   getAllRecipes() {
     this.Recipe = [];
     // return this.Recipe.slice();
-    return this.http.get('https://angular-http-6e830.firebaseio.com/recipes.json'
-    // ,
-    //   {
-    //     headers: new HttpHeaders({ 'random-header': 'random' }),
-    //     params: new HttpParams().set('firstparam', 'val')
-    //   }
-    ).pipe(
+    return this.http.get('https://angular-http-6e830.firebaseio.com/recipes.json')
+    .pipe(
     map((res: Recipe) => {
       for (const key in res) {
         if (res.hasOwnProperty(key)) {
@@ -41,6 +38,23 @@ export class RecipeService {
     );
   }
 
+  // getAllRecipes() {
+  //   return this.authService.user.pipe(take(1), exhaustMap(user => {
+  //     return this.http.get('https://angular-http-6e830.firebaseio.com/recipes.json',
+  //       { params: new HttpParams().set('auth', user.token) });
+  //   }), map((res: Recipe) => {
+  //     for (const key in res) {
+  //       if (res.hasOwnProperty(key)) {
+  //         res[key].id = key;
+  //         this.Recipe.push(res[key]);
+  //       }
+  //     }
+  //     return this.Recipe;
+  //   }), catchError(errorRes => {
+  //     return throwError(errorRes);
+  //   }));
+  // }
+
   getRecipe(id: number) {
     return this.Recipe.slice()[id];
   }
@@ -48,7 +62,6 @@ export class RecipeService {
   addRecipe(recipe: Recipe) {
     this.http.post('https://angular-http-6e830.firebaseio.com/recipes.json', recipe, { observe: 'response'}).subscribe((res: any) => {
       if (res) {
-        console.log(res);
         this.recipeListUpdated.next(true);
         alert('data added succesfully');
      }

@@ -34,7 +34,6 @@ export class RecipeEditComponent implements OnInit {
       this.id = +params.id;
       if (!isNaN(this.id)) {
         this.editMode = true;
-        console.log(this.editMode, 'edit mode');
       }
     });
 
