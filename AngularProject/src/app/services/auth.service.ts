@@ -4,6 +4,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { throwError, Subject, BehaviorSubject } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -36,7 +37,6 @@ export class AuthService {
       'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAJpJxIW3NxIQhIe-yXIu6o92gNUPVAJAA',
       { email, password, returnSecureToken: true }
    ).pipe(catchError(errorRes => {
-     console.log(errorRes);
      return this.errorHandling(errorRes);
    }), tap(resData => {
          // ignore the tslint errors if any
@@ -104,8 +104,14 @@ export class AuthService {
   }
 
   autoLogout(expirationDuration: number) {
-this.tokenExpirationTimer = setTimeout(() => {
-  this.logout();
-}, expirationDuration);
+    this.tokenExpirationTimer = setTimeout(() => {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Oops...',
+        text: 'Token expired. Login again.'
+      }).then(() => {
+        this.logout();
+      });
+}, expirationDuration );
   }
 }

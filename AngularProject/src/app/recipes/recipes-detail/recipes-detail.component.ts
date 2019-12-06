@@ -25,12 +25,6 @@ export class RecipesDetailComponent implements OnInit {
 
       this.recipe = this.recipeService.getRecipe(this.id);
 
-      this.recipeService.recipeListUpdated.subscribe((update: boolean) => {
-          if (update) {
-            this.recipe = this.recipeService.getRecipe(this.id);
-          }
-      });
-
       if (!this.recipe) {
         this.router.navigate(['../no-recipe-found'], {relativeTo: this.route});
         }
@@ -39,10 +33,10 @@ export class RecipesDetailComponent implements OnInit {
   }
 
   addToShoppingList() {
-    this.recipe.ingredient.forEach(element => {
+    this.recipe.ingredient ? this.recipe.ingredient.forEach(element => {
       this.shoppingListService.addIngredient(element);
-    });
-    alert('Items added to Shopping list');
+      alert('Items added to Shopping list');
+    }) : alert('No inngredients to Add');
   }
 
   deleteRecipe() {
