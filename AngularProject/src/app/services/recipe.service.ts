@@ -5,6 +5,7 @@ import { Subject, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { map, catchError, take, exhaustMap } from 'rxjs/operators';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -62,8 +63,21 @@ export class RecipeService {
   addRecipe(recipe: Recipe) {
     this.http.post('https://angular-http-6e830.firebaseio.com/recipes.json', recipe, { observe: 'response'}).subscribe((res: any) => {
       if (res) {
-        this.recipeListUpdated.next(true);
-        alert('data added succesfully');
+        Swal.fire({
+          icon: 'success',
+          title: 'Your recipe has been saved',
+          showConfirmButton: true,
+        }).then(result => {
+          if (result) {
+            this.recipeListUpdated.next(true);
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Something went wrong!',
+            });
+          }
+        });
      }
     }, catchError(errorRes => {
         return throwError(errorRes);
@@ -83,15 +97,58 @@ export class RecipeService {
   }
 
   deleteRecipe(index: number) {
-    const val = confirm('do you really want to delete');
-    if (val) {
-      this.firebaseId = this.Recipe[index].id;
-      this.http.delete('https://angular-http-6e830.firebaseio.com/recipes/' + this.firebaseId + '.json').subscribe(() => {
-        this.recipeListUpdated.next(true);
-      }, catchError(errorRes => {
-        return throwError(errorRes);
-      })
-      );
-    }
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-success',
+        cancelButton: 'btn btn-danger'
+      },
+      buttonsStyling: false
+    });
+
+    swalWithBootstrapButtons.fire({
+      title: 'Are you sure?',
+      text: 'You won\'t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel!',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.value) {
+        this.firebaseId = this.Recipe[index].id;
+        this.http.delete('https://angular-http-6e830.firebaseio.com/recipes/' + this.firebaseId + '.json').subscribe(() => {
+          this.recipeListUpdated.next(true);
+        }, catchError(errorRes => {
+          return throwError(errorRes);
+        })
+        );
+        swalWithBootstrapButtons.fire(
+          'Deleted!',
+          'Your recipe has been deleted.',
+          'success'
+        );
+      } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        swalWithBootstrapButtons.fire(
+          'Cancelled',
+          'Your recipe is safe :)',
+          'error'
+        );
+      }
+    });
+
+
+    // const val = confirm('do you really want to delete');
+    // if (val) {
+    //   this.firebaseId = this.Recipe[index].id;
+    //   this.http.delete('https://angular-http-6e830.firebaseio.com/recipes/' + this.firebaseId + '.json').subscribe(() => {
+    //     this.recipeListUpdated.next(true);
+    //   }, catchError(errorRes => {
+    //     return throwError(errorRes);
+    //   })
+    //   );
+    // }
   }
 }
