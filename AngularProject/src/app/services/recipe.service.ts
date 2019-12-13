@@ -60,6 +60,10 @@ export class RecipeService {
     return this.Recipe.slice()[id];
   }
 
+  getRecipeById(firebaseId: string) {
+    return this.http.get('https://angular-http-6e830.firebaseio.com/recipes/' + firebaseId + '.json');
+  }
+
   addRecipe(recipe: Recipe) {
     this.http.post('https://angular-http-6e830.firebaseio.com/recipes.json', recipe, { observe: 'response'}).subscribe((res: any) => {
       if (res) {

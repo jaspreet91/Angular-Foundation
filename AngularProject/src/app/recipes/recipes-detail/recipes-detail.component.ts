@@ -24,9 +24,16 @@ export class RecipesDetailComponent implements OnInit {
       this.id = params.id;
 
       this.recipe = this.recipeService.getRecipe(this.id);
+      if (this.recipe) {
+        localStorage.setItem('firebaseID', this.recipe.id);
+      }
 
-      if (!this.recipe) {
+      if (!this.recipe && !localStorage.getItem('firebaseID')) {
         this.router.navigate(['../no-recipe-found'], {relativeTo: this.route});
+      } else {
+        this.recipeService.getRecipeById(localStorage.getItem('firebaseID')).subscribe((recipe: Recipe) => {
+          this.recipe = recipe;
+        });
         }
     });
 
